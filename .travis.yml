@@ -19,4 +19,4 @@ before_script:
 
 script:
   - ng build --prod
-  - sonar-scanner
+  - sonar-scanner -Dsonar.login=${SONAR_API_KEY}
