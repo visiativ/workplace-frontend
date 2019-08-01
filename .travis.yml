@@ -1,7 +1,7 @@
 language: node_js
 dist: trusty
 node_js:
-- '11'
+  - '11'
 sudo: required
 
 env:
@@ -13,8 +13,10 @@ addons:
     organization: visiativ
     token:
       secure: $SONAR_API_KEY
+
 before_script:
-- npm install -g @angular/cli
+  - npm install -g @angular/cli
+
 script:
-- ng build --prod
-- sonar-scanner -Dsonar.login=$SONAR_API_KEY
+  - ng build --prod
+  - sonar-scanner -Dsonar.login=$SONAR_API_KEY
