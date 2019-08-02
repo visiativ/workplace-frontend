@@ -10,6 +10,10 @@ addons:
     token:
       secure: HrJV56mtMA++IXjkXImpQB5BplJCzWCQijmCuQ2SKyjGfSYAwN3pU2TiMTpJ7IeuO5pqV7rvn8wcxtErJhJBA3oaBeLv4WyhXCC+NcE+fhUFnXpy+x6ap4b6VssVxtB+ywh+IQnpd5dMgQOQVxLQ+HzKs8paoJcfkDQwYv1FdsNq9dvSgSRy8yVfdFQTmY95f5DvsFt36UX2Hr1Kr9Q4cW9oekCeYShHoo+EFEqAsqWy3DC0+jwZjsQS3BCqEm4bnWZCqJGEAkq3cMtHYkmvUr9+dHEGHtpfRYKv8lUwZ/mksPglLyUAt6JUm5X2ArManMB3JDYOBe4sm5pCf/xTc5hHR5a35Uvn8TLMQIRaZp3r9PwlPpXzi+e4RzbJjG9d5Us2IcVh6HpmfoIhCatAYIME368JrdhD5DWOzkCs6ZC5x4fHGqsSweyqz5dOmuYStEmnTPwfYvxce5UMgX3IBgueSu5JE2W8VuunoFuED35hHiTpenZSHDdf9lgUM0zj3rfH938M1IhjrI3zJ+EdwjMRFk4fC2dN6Q4yveKeY3iAhL/tlhquiRC93WAB7S5Eq9rzfk4LLFeFSaiHSgUTrfNCn+92ZepsOWu/2hpAIxApq7fxnp4iEjmYzgGmTGuPhL7u3Wmes7p7f4t2dr1WWtZtiVGvwzFYYQb3Fi7b9nw=
 
+cache:
+  directories:
+    - ./node_modules
+
 before_script:
   - npm install -g @angular/cli
 
