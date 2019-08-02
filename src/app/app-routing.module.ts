@@ -1,14 +1,16 @@
-import { ValideTokenGuardGuard } from './oidc/valide-token-guard.guard';
-import { ClaimsComponent } from './oidc/claims/claims.component';
-import { NotAuthorizedComponent } from './error/not-authorized/not-authorized.component';
+import { OidcLogoutComponent } from './oidc/oidc-logout/oidc-logout.component';
+import { HomeComponent } from './view/home/home.component';
+import { OidcLoginComponent } from './oidc/oidc-login/oidc-login.component';
+import { ValidTokenGuardGuard } from './oidc/valid-token-guard.guard';
 import { NotFoundComponent } from './error/not-found/not-found.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AppComponent } from './app.component';
 
 
 const routes: Routes = [
-  { path: '', component: ClaimsComponent, canActivate: [ValideTokenGuardGuard] },
+  { path: '', component: HomeComponent, canActivate: [ValidTokenGuardGuard] },
+  { path: 'login', component: OidcLoginComponent },
+  { path: 'logout', component: OidcLogoutComponent },
   { path: '**', component: NotFoundComponent }
 ];
 

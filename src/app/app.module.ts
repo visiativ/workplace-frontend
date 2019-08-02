@@ -1,4 +1,4 @@
-import { environment } from './../environments/environment';
+import { MoovappsOidcModule } from './oidc/moovapps-oidc.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -9,25 +9,22 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { HttpClientModule } from '@angular/common/http';
 import { NotFoundComponent } from './error/not-found/not-found.component';
 import { NotAuthorizedComponent } from './error/not-authorized/not-authorized.component';
-import { ClaimsComponent } from './oidc/claims/claims.component';
+import { OidcLoginComponent } from './oidc/oidc-login/oidc-login.component';
+import { HomeComponent } from './view/home/home.component';
+import { OidcLogoutComponent } from './oidc/oidc-logout/oidc-logout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NotFoundComponent,
     NotAuthorizedComponent,
-    ClaimsComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    OAuthModule.forRoot({
-      resourceServer: {
-          allowedUrls: environment.apiUrls,
-          sendAccessToken: true
-      }
-  })
+    MoovappsOidcModule
   ],
   providers: [],
   bootstrap: [AppComponent]

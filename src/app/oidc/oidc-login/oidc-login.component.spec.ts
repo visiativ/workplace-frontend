@@ -1,21 +1,20 @@
-import { OAuthService } from 'angular-oauth2-oidc';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClaimsComponent } from './claims.component';
+import { OidcLoginComponent } from './oidc-login.component';
 
-describe('ClaimsComponent', () => {
-  let component: ClaimsComponent;
-  let fixture: ComponentFixture<ClaimsComponent>;
+describe('OidcLoginComponent', () => {
+  let component: OidcLoginComponent;
+  let fixture: ComponentFixture<OidcLoginComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ClaimsComponent, OAuthService ]
+      declarations: [ OidcLoginComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ClaimsComponent);
+    fixture = TestBed.createComponent(OidcLoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
