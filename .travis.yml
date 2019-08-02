@@ -19,5 +19,5 @@ before_script:
 
 script:
   - ng build --prod
-  - ng test --watch=false --code-coverage --browsers ChromeHeadless
+  - ng test --no-progress --watch=false --code-coverage --browsers ChromeHeadless
   - sonar-scanner
