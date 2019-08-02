@@ -43,7 +43,8 @@ module.exports = function (config) {
          * - metadata[2] = plataform name
          * - metadata[3] = plataform version
          */
-         return metadata.concat('xml').join('.');
+        //  return metadata.concat('xml').join('.');
+        return metadata[0] + '.xml';
       }
     }
   });
