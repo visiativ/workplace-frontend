@@ -1,3 +1,4 @@
+import { OAuthService } from 'angular-oauth2-oidc';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClaimsComponent } from './claims.component';
@@ -8,7 +9,7 @@ describe('ClaimsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ClaimsComponent ]
+      declarations: [ ClaimsComponent, OAuthService ]
     })
     .compileComponents();
   }));
