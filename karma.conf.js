@@ -8,7 +8,6 @@ module.exports = function (config) {
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
-      require('karma-firefox-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-sonarqube-reporter'),
       require('karma-coverage-istanbul-reporter'),
@@ -22,7 +21,7 @@ module.exports = function (config) {
       reports: ['html', 'lcovonly', 'text-summary'],
       fixWebpackSourcePaths: true
     },
-    reporters: ['progress', 'kjhtml', 'junit'],
+    reporters: ['progress', 'kjhtml', 'sonarqube'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
