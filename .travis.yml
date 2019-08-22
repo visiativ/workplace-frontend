@@ -1,4 +1,5 @@
 language: node_js
+dist: bionic
 node_js:
   - '11'
 sudo: required
@@ -14,7 +15,7 @@ cache:
   directories:
     - ./node_modules
 
-before_script:
+install:
   - npm install -g @angular/cli
 
 script:

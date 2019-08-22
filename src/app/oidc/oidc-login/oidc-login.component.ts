@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MoovappsOidcService } from '../moovapps-oidc.service';
 
 @Component({
   selector: 'app-oidc-login',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OidcLoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private moovappsOidcService: MoovappsOidcService) { }
 
   ngOnInit() {
+    this.moovappsOidcService.runInitialLoginSequence();
   }
 
 }
