@@ -1,0 +1,65 @@
+import { AuthenticationService } from './authentication.service';
+import { AuthConfig, OAuthModuleConfig, ValidationHandler, JwksValidationHandler, OAuthService, OAuthModule } from 'angular-oauth2-oidc';
+import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ModuleWithProviders } from '@angular/compiler/src/core';
+import { AutenticationDebugComponent } from './debug/autentication-debug/autentication-debug.component';
+
+@NgModule({
+  declarations: [AutenticationDebugComponent],
+  imports: [
+    CommonModule,
+    OAuthModule.forRoot()
+  ]
+})
+export class AuthenticationModule {
+
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: AuthenticationModule,
+      providers: [
+        AuthenticationService,
+        OAuthService,
+        { provide: AuthConfig, useFactory: this.authConfigFactory },
+        { provide: OAuthModuleConfig, useFactory: this.authModuleConfigFactory },
+        { provide: ValidationHandler, useClass: JwksValidationHandler }
+      ]
+    };
+  }
+
+  constructor(@Optional() @SkipSelf() parentModule: AuthenticationModule) {
+    if (parentModule) {
+      throw new Error('CoreModule is already loaded. Import it in the AppModule only');
+    }
+  }
+
+  static authModuleConfigFactory(): OAuthModuleConfig {
+    return {
+      resourceServer: {
+        allowedUrls: ['https://demo.identityserver.io/api'],
+        sendAccessToken: true,
+      }
+    };
+  }
+
+  static authConfigFactory(): AuthConfig {
+    const authServer = 'http://keycloak:9080';
+    const tenant = 'jhipŝter';
+    return {
+      // Url of the Identity Provider
+      issuer: `${authServer}/auth/realms/${tenant}`,
+      userinfoEndpoint: `${authServer}/auth/realms/${tenant}/protocol/openid-connect/userinfo`,
+      loginUrl: `${authServer}/auth/realms/${tenant}/protocol/openid-connect/auth`,
+      logoutUrl: `${authServer}/auth/realms/${tenant}/protocol/openid-connect/logout`,
+      requireHttps: false,
+      redirectUri: window.location.origin,
+      clientId: 'web_app',
+      responseType: 'code token id_token', // keycloak need hybrid flow to set at_hash
+
+      // set the scope for the permissions the client should request
+      // The first three are defined by OIDC. The 4th is a usecase-specific one
+      scope: 'openid profile email'
+      // showDebugInformation: true
+    };
+  }
+}
