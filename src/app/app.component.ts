@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
 
   constructor(private authenticationService: AuthenticationService) {
+    this.authenticationService.runInitialLoginSequence();
   }
 
 }

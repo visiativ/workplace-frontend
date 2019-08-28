@@ -1,3 +1,4 @@
+import { AuthenticationService } from './../../authentication.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AutenticationDebugComponent implements OnInit {
 
-  constructor() { }
+  public authenticationService: AuthenticationService;
+
+  constructor(authenticationService: AuthenticationService) {
+    this.authenticationService = authenticationService;
+  }
 
   ngOnInit() {
   }

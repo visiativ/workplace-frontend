@@ -3,7 +3,7 @@ import { map, filter } from 'rxjs/operators';
 import { BehaviorSubject, ReplaySubject, Observable, combineLatest } from 'rxjs';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { OAuthService, OAuthErrorEvent } from 'angular-oauth2-oidc';
+import { OAuthService, OAuthErrorEvent, AuthConfig } from 'angular-oauth2-oidc';
 import { promise } from 'protractor';
 
 @Injectable()
@@ -22,6 +22,7 @@ export class AuthenticationService {
   ];
 
   private isAuthenticatedSubject$ = new BehaviorSubject<boolean>(false);
+
   /**
    * is there any authentication?
    */
@@ -43,13 +44,25 @@ export class AuthenticationService {
    * - the latest known state of whether the user is authorized
    * - whether the ajax calls for initial log in have all been done
    */
-  public canActivateProtectedRoutes$: Observable<boolean> = combineLatest([
+  public readonly canActivateProtectedRoutes$: Observable<boolean> = combineLatest([
     this.isAuthenticated$,
     this.isDoneLoading$
   ]).pipe(map(values => values.every(b => b)));
 
-  constructor(private oauthService: OAuthService, private router: Router) {
+  private hasValidAccessTokenSubject$ = new BehaviorSubject<boolean>(false);
+  public readonly hasValidAccessToken$ = this.hasValidAccessTokenSubject$.asObservable();
+  public readonly accessToken$: Observable<string | null> = this.hasValidAccessToken$
+    .pipe(map(valid => valid ? this.oauthService.getAccessToken() : null));
 
+  private hasValidIdTokenSubject$ = new BehaviorSubject<boolean>(false);
+  public readonly hasValidIdToken$ = this.hasValidIdTokenSubject$.asObservable();
+  public readonly idToken$: Observable<string | null> = this.hasValidIdToken$
+    .pipe(map(valid => valid ? this.oauthService.getIdToken() : null));
+
+  private identityClaimsSubject$ = new BehaviorSubject<object | null>(null);
+  public readonly identityClaims$: Observable<object | null> = this.identityClaimsSubject$.asObservable();
+
+  constructor(private oauthService: OAuthService, private authConfig: AuthConfig, private router: Router) {
     this.debug(() => {
       this.oauthService.events.subscribe(event => {
         if (event instanceof OAuthErrorEvent) {
@@ -61,10 +74,13 @@ export class AuthenticationService {
     });
 
     /**
-     * every event can update the utenticated status
+     * every event can update the autenticated status
      */
     this.oauthService.events.subscribe(event => {
       this.isAuthenticatedSubject$.next(this.oauthService.hasValidAccessToken());
+      this.hasValidAccessTokenSubject$.next(this.oauthService.hasValidAccessToken());
+      this.hasValidIdTokenSubject$.next(this.oauthService.hasValidIdToken());
+      this.identityClaimsSubject$.next(this.oauthService.getIdentityClaims());
     });
 
     this.oauthService.events
@@ -84,6 +100,7 @@ export class AuthenticationService {
   }
 
   public runInitialLoginSequence(): Promise<void> {
+
     this.debug(() => {
       if (location.hash) {
         console.log('Encountered hash fragment, plotting as table...');
@@ -92,46 +109,50 @@ export class AuthenticationService {
     });
 
     return this.oauthService.loadDiscoveryDocument()
-      .then(() => this.oauthService.initCodeFlow())
-      .then(() => this.trySilentRefresh())
+      .then(() => this.trySilentLogin())
+      // .then(() => this.trySilentRefresh())
       .then(() => {
-        this.isDoneLoadingSubject$.next(true);
         if (this.oauthService.state && this.oauthService.state !== 'undefined' && this.oauthService.state !== 'null') {
           console.log('There was state, so we are sending you to: ' + this.oauthService.state);
           this.router.navigateByUrl(this.oauthService.state);
         }
-      });
+      })
+      .catch(err => {
+        console.warn('error durring silent login!');
+        console.dir(err);
+      })
+      .finally(() => this.isDoneLoadingSubject$.next(true));
   }
 
-  private trySilentRefresh(): Promise<void> {
-    if (this.oauthService.hasValidAccessToken()) {
-      return Promise.resolve();
-    }
-    return this.oauthService.silentRefresh()
+  public login(): Promise<void> {
+    this.oauthService.initCodeFlow();
+    return this.oauthService.tryLoginCodeFlow();
+  }
+
+  /**
+   * try to silent login with previous login.
+   *
+   */
+  private trySilentLogin(): Promise<void> {
+    return this.oauthService.tryLoginCodeFlow()
       .then(() => Promise.resolve())
-      .catch(error => {
+      .catch((error) => {
         if (error
-          && error.reason
+          && error.params
           && AuthenticationService.ERROR_RESPONSES_REQUIRING_USER_INTERACTION
-            .indexOf(error.reason.error) >= 0) {
+            .indexOf(error.params.error) >= 0) {
           // At this point we know for sure that we have to ask the
           // user to log in, so we redirect them to the IdServer to
           // enter credentials.
           //
           // Enable this to ALWAYS force a user to login.
-          // this.oauthService.initImplicitFlow();
+          // this.oauthService.initCodeFlow();
           //
           // Instead, we'll now do this:
-          this.debug(() => console.warn('User interaction is needed to log in, we will wait for the user to manually log in.'));
+          console.warn('User interaction is needed to log in, we will wait for the user to manually log in.');
           return Promise.resolve();
         }
-
-        // We can't handle the truth, just pass on the problem to the
-        // next handler.
-        return Promise.reject(error);
-
       });
-
   }
 
   private debug(fn: () => void): void {

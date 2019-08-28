@@ -1,1 +1,40 @@
-<p>autentication-debug works!</p>
+<div>
+  <h2>Authentication debug informations</h2>
+  <table>
+    <tr>
+      <th>isDoneLoading</th>
+      <td><code>{{authenticationService.isDoneLoading$ | async}}</code></td>
+    </tr>
+    <tr>
+      <th>isAuthenticated</th>
+      <td><code>{{authenticationService.isAuthenticated$ | async}}</code></td>
+    </tr>
+    <tr>
+      <th>canActivateProtectedRoutes</th>
+      <td><code>{{authenticationService.canActivateProtectedRoutes$ | async}}</code></td>
+    </tr>
+    <tr>
+      <th>hasValidAccessToken</th>
+      <td><code>{{authenticationService.hasValidAccessToken$ | async}}</code></td>
+    </tr>
+    <tr>
+      <th>AccessToken</th>
+      <td><code class="break-all">{{authenticationService.accessToken$ | async}}</code></td>
+    </tr>
+    <tr>
+      <th>hasValidIdToken</th>
+      <td><code>{{authenticationService.hasValidIdToken$ | async}}</code></td>
+    </tr>
+    <tr>
+      <th>IdToken</th>
+      <td><code class="break-all">{{authenticationService.idToken$ | async }}</code></td>
+    </tr>
+
+    <tr>
+      <th>IdentityClaims</th>
+      <td class="pre"><code>{{authenticationService.identityClaims$ | async | json}}</code></td>
+    </tr>
+
+
+  </table>
+</div>

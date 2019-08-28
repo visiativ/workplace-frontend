@@ -8,14 +8,12 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NotFoundComponent } from './error/not-found/not-found.component';
 import { HomeComponent } from './view/home/home.component';
-import { AutenticationDebugComponent } from './autentication/debug/autentication-debug/autentication-debug.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NotFoundComponent,
-    HomeComponent,
-    AutenticationDebugComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule,
