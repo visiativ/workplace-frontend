@@ -3,19 +3,19 @@
   <table>
     <tr>
       <th>isDoneLoading</th>
-      <td><code>{{authenticationService.isDoneLoading$ | async}}</code></td>
+      <td>{{authenticationService.isDoneLoading$ | async}}</td>
     </tr>
     <tr>
       <th>isAuthenticated</th>
-      <td><code>{{authenticationService.isAuthenticated$ | async}}</code></td>
+      <td>{{authenticationService.isAuthenticated$ | async}}</td>
     </tr>
     <tr>
       <th>canActivateProtectedRoutes</th>
-      <td><code>{{authenticationService.canActivateProtectedRoutes$ | async}}</code></td>
+      <td>{{authenticationService.canActivateProtectedRoutes$ | async}}</td>
     </tr>
     <tr>
       <th>hasValidAccessToken</th>
-      <td><code>{{authenticationService.hasValidAccessToken$ | async}}</code></td>
+      <td>{{authenticationService.hasValidAccessToken$ | async}}</td>
     </tr>
     <tr>
       <th>AccessToken</th>
@@ -23,7 +23,7 @@
     </tr>
     <tr>
       <th>hasValidIdToken</th>
-      <td><code>{{authenticationService.hasValidIdToken$ | async}}</code></td>
+      <td>{{authenticationService.hasValidIdToken$ | async}}</td>
     </tr>
     <tr>
       <th>IdToken</th>
@@ -32,7 +32,7 @@
 
     <tr>
       <th>IdentityClaims</th>
-      <td class="pre"><code>{{authenticationService.identityClaims$ | async | json}}</code></td>
+      <td><pre><code>{{identityClaimsPretty$ | async }}</code></pre></td>
     </tr>
 
 
